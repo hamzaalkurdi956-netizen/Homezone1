@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>لوحة إدارة HomeZone</title>
+<link rel="icon" type="image/png" href="/img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <!-- تسجيل الدخول -->
+  <main class="wrap login" id="login" hidden>
+    <form class="loginbox" id="loginForm" novalidate>
+      <img class="brandlogo" src="/img/logo-word.png" alt="HomeZone" width="700" height="119">
+      <h1><span dir="ltr">CONTROL <em>ZONE</em></span></h1>
+      <p class="spec">لوحة الإدارة. أدخل كلمة المرور للمتابعة.</p>
+      <label for="lPass">كلمة المرور</label>
+      <input class="field" id="lPass" type="password" autocomplete="current-password" dir="ltr" required>
+      <p class="err" id="lErr" role="alert"></p>
+      <button class="btn" type="submit" id="lBtn">دخول</button>
+      <a class="link" href="/">العودة إلى المتجر</a>
+    </form>
+  </main>
+
+  <!-- اللوحة -->
+  <section class="wrap" id="admin" hidden>
+    <div class="ahead">
+      <div><span class="zcode">لوحة الإدارة</span><h1 class="adminh" dir="ltr">CONTROL <span>ZONE</span></h1></div>
+      <div class="ptools" style="margin:0">
+        <a class="btn ghost" href="/" target="_blank" rel="noopener">فتح المتجر</a>
+        <button class="btn ghost" data-act="logout">تسجيل الخروج</button>
+      </div>
+    </div>
+    <nav class="tabs" id="tabs" aria-label="أقسام الإدارة">
+      <button class="tab" data-act="tab" data-id="orders"><b>ORDERS ZONE <i class="nb" id="newBadge" hidden>0</i></b><span>الطلبات</span></button>
+      <button class="tab" data-act="tab" data-id="products"><b>STOCK ZONE</b><span>المنتجات والأسعار</span></button>
+      <button class="tab" data-act="tab" data-id="coupons"><b>CODE ZONE</b><span>أكواد الخصم</span></button>
+      <button class="tab" data-act="tab" data-id="videos"><b>WATCH ZONE</b><span>الفيديوهات</span></button>
+      <button class="tab" data-act="tab" data-id="partners"><b>PARTNERS ZONE</b><span>شركاء النجاح</span></button>
+      <button class="tab" data-act="tab" data-id="settings"><b>SETUP ZONE</b><span>الإعدادات</span></button>
+    </nav>
+
+    <div class="pane" id="pane-orders">
+      <div class="ptools">
+        <button class="btn sm" data-act="newOrder">تسجيل طلب يدوي</button>
+        <a class="btn sm ghost" href="/api/admin/orders.csv" download>تصدير الطلبات CSV</a>
+        <button class="btn sm ghost" data-act="refreshOrders">تحديث</button>
+      </div>
+      <div class="ostats" id="ostats"></div>
+      <div id="ordList"></div>
+    </div>
+
+    <div class="pane" id="pane-products" hidden>
+      <div class="ptools">
+        <input class="field grow" id="pSearch" type="search" placeholder="ابحث في المنتجات" aria-label="بحث في المنتجات">
+        <select class="field" id="pZone" aria-label="تصفية حسب القسم"></select>
+        <button class="btn sm" data-act="newProd">منتج جديد</button>
+      </div>
+      <div id="prodList"></div>
+    </div>
+
+    <div class="pane" id="pane-coupons" hidden>
+      <div class="panel">
+        <h3>كود خصم جديد</h3>
+        <form class="form" id="cForm" novalidate>
+          <div class="two">
+            <div><label for="cCode">الكود</label><input class="field" id="cCode" dir="ltr" maxlength="24" placeholder="WELCOME10" autocomplete="off"></div>
+            <div><label for="cType">نوع الخصم</label><select class="field" id="cType"><option value="percent">نسبة مئوية %</option><option value="fixed">مبلغ ثابت (د.أ)</option></select></div>
+          </div>
+          <div class="two">
+            <div><label for="cValue">قيمة الخصم</label><input class="field" id="cValue" type="number" min="0" step="0.01" inputmode="decimal"></div>
+            <div><label for="cMin">أقل قيمة للطلب (اختياري)</label><input class="field" id="cMin" type="number" min="0" step="0.01" inputmode="decimal"></div>
+          </div>
+          <p class="err" id="cErr" role="alert"></p>
+          <div><button class="btn" type="submit">حفظ الكود</button></div>
+        </form>
+        <p class="note">إدخال كود موجود يحدّث قيمته. لا يرى العملاء الأكواد، ولا يتحقق منها إلا الخادم عند إدخالها.</p>
+      </div>
+      <div id="cList"></div>
+    </div>
+
+    <div class="pane" id="pane-videos" hidden>
+      <div class="panel">
+        <h3>فيديو جديد</h3>
+        <form class="form" id="vForm" novalidate>
+          <label for="vTitle">عنوان الفيديو</label><input class="field" id="vTitle" maxlength="120">
+          <label for="vDesc">وصف قصير</label><textarea class="field" id="vDesc" rows="3" maxlength="600"></textarea>
+          <label for="vProd">المنتج المرتبط (اختياري)</label><select class="field" id="vProd"></select>
+          <label for="vFile">ملف فيديو (mp4 أو webm)</label><input class="field file" id="vFile" type="file" accept="video/mp4,video/webm">
+          <label for="vUrl">أو رابط فيديو خارجي (يفتح في تبويب جديد)</label><input class="field" id="vUrl" type="url" dir="ltr" placeholder="https://">
+          <p class="err" id="vErr" role="alert"></p>
+          <div><button class="btn" type="submit" id="vBtn">نشر الفيديو</button></div>
+        </form>
+      </div>
+      <div id="vAdminList"></div>
+    </div>
+
+    <div class="pane" id="pane-partners" hidden>
+      <div class="ptools">
+        <button class="btn sm" data-act="newPartner">شريك جديد</button>
+        <a class="btn sm ghost" href="/#/partners" target="_blank" rel="noopener">معاينة صفحة الشركاء</a>
+      </div>
+      <div id="rList"></div>
+    </div>
+
+    <div class="pane" id="pane-settings" hidden>
+      <div class="panel">
+        <h3>إعدادات المتجر</h3>
+        <form class="form" id="sForm" novalidate>
+          <div class="two">
+            <div><label for="sFree">حد التوصيل المجاني (د.أ)</label><input class="field" id="sFree" type="number" min="0" step="0.5" inputmode="decimal"></div>
+            <div><label for="sShip">رسوم التوصيل (د.أ)</label><input class="field" id="sShip" type="number" min="0" step="0.5" inputmode="decimal"></div>
+          </div>
+          <label for="sNotice">شريط إعلان أعلى المتجر (اتركه فارغًا لإخفائه)</label>
+          <input class="field" id="sNotice" maxlength="140" placeholder="خصم على قسم FRY ZONE هذا الأسبوع">
+          <label for="sWa">رقم واتساب المتجر (مع رمز الدولة، مثل 962791234567)</label>
+          <input class="field" id="sWa" dir="ltr" inputmode="tel" maxlength="20" placeholder="962791234567">
+          <p class="note">إذا كتبته، يظهر للزبون زر يرسل تفاصيل طلبه إلى هذا الرقم بعد التأكيد. ويظهر في لوحة الطلبات زر واتساب لمراسلة كل زبون.</p>
+          <p class="err" id="sErr" role="alert"></p>
+          <div><button class="btn" type="submit">حفظ الإعدادات</button></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="scrim m" id="mscrim" data-act="closeModals" hidden></div>
+
+  <div class="modal" id="eModal" role="dialog" aria-modal="true" aria-labelledby="eTitle" hidden>
+    <div class="mhead"><h2 id="eTitle">منتج جديد</h2><button class="iconbtn" data-act="closeModals" aria-label="إغلاق">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <form class="form mbody" id="eForm" novalidate>
+      <label for="eName">اسم المنتج</label><input class="field" id="eName" maxlength="120">
+      <div class="two">
+        <div><label for="eZone">القسم</label><select class="field" id="eZone"></select></div>
+        <div><label for="eIcon">الأيقونة (تظهر عند عدم وجود صورة)</label><select class="field" id="eIcon"></select></div>
+      </div>
+      <div class="two">
+        <div><label for="ePrice">السعر (د.أ)</label><input class="field" id="ePrice" type="number" min="0" step="0.01" inputmode="decimal"></div>
+        <div><label for="eOld">السعر قبل الخصم (اختياري)</label><input class="field" id="eOld" type="number" min="0" step="0.01" inputmode="decimal"></div>
+      </div>
+      <label for="eTag">شارة على البطاقة (اختياري)</label><input class="field" id="eTag" maxlength="24" placeholder="جديد أو الأكثر مبيعًا">
+      <label for="eSpec">المواصفات المختصرة</label><input class="field" id="eSpec" maxlength="200">
+      <label for="eDesc">شرح المنتج</label><textarea class="field" id="eDesc" rows="5" maxlength="2000"></textarea>
+      <label for="eImg">صورة المنتج (png أو jpg أو webp، حتى 8 ميغابايت)</label><input class="field file" id="eImg" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+      <label class="chk" id="eImgRmWrap" hidden><input type="checkbox" id="eImgRm"> إزالة الصورة الحالية</label>
+      <label for="eVid">فيديو شرح المنتج (mp4 أو webm)</label><input class="field file" id="eVid" type="file" accept="video/mp4,video/webm">
+      <label class="chk" id="eVidRmWrap" hidden><input type="checkbox" id="eVidRm"> إزالة الفيديو الحالي</label>
+      <label for="eVurl">أو رابط فيديو خارجي (يفتح في تبويب جديد)</label><input class="field" id="eVurl" type="url" dir="ltr" placeholder="https://">
+      <label class="chk"><input type="checkbox" id="eActive" checked> ظاهر في المتجر</label>
+      <p class="err" id="eErr" role="alert"></p>
+    </form>
+    <div class="mfoot"><button class="btn" data-act="saveProduct" id="eSave">حفظ المنتج</button><button class="btn ghost" data-act="closeModals">إلغاء</button></div>
+  </div>
+
+  <div class="modal" id="rModal" role="dialog" aria-modal="true" aria-labelledby="rTitle" hidden>
+    <div class="mhead"><h2 id="rTitle">شريك جديد</h2><button class="iconbtn" data-act="closeModals" aria-label="إغلاق">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <form class="form mbody" id="rForm" novalidate>
+      <label for="rName">اسم الشريك</label><input class="field" id="rName" maxlength="100">
+      <label for="rDesc">نبذة قصيرة (اختياري)</label><textarea class="field" id="rDesc" rows="3" maxlength="500"></textarea>
+      <label for="rUrl">رابط الموقع (اختياري)</label><input class="field" id="rUrl" type="url" dir="ltr" placeholder="https://">
+      <label for="rLogo">شعار الشريك (png أو jpg أو webp)</label><input class="field file" id="rLogo" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+      <label class="chk" id="rLogoRmWrap" hidden><input type="checkbox" id="rLogoRm"> إزالة الشعار الحالي</label>
+      <label for="rSort">الترتيب (الرقم الأصغر يظهر أولًا، اختياري)</label><input class="field" id="rSort" type="number" min="0" step="1" inputmode="numeric">
+      <p class="err" id="rErr" role="alert"></p>
+    </form>
+    <div class="mfoot"><button class="btn" data-act="savePartner" id="rSave">حفظ الشريك</button><button class="btn ghost" data-act="closeModals">إلغاء</button></div>
+  </div>
+
+  <div class="modal" id="oModal" role="dialog" aria-modal="true" aria-labelledby="oTitle" hidden>
+    <div class="mhead"><h2 id="oTitle">تسجيل طلب يدوي</h2><button class="iconbtn" data-act="closeModals" aria-label="إغلاق">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <form class="form mbody" id="oForm" novalidate>
+      <label for="oName">اسم العميل</label><input class="field" id="oName" maxlength="80" autocomplete="off">
+      <label for="oPhone">رقم الهاتف</label><input class="field" id="oPhone" dir="ltr" inputmode="tel" maxlength="20" autocomplete="off">
+      <div class="two">
+        <div><label for="oCity">المدينة</label><select class="field" id="oCity"></select></div>
+        <div><label for="oAddr">العنوان</label><input class="field" id="oAddr" maxlength="200" autocomplete="off"></div>
+      </div>
+      <label for="oNote">ملاحظات (اختياري)</label><input class="field" id="oNote" maxlength="300">
+      <label for="oProd">إضافة جهاز</label>
+      <div class="adderow"><select class="field" id="oProd"></select><input class="field" id="oQty" type="number" min="1" max="20" value="1" aria-label="الكمية"><button class="btn sm" type="button" data-act="oAddLine">إضافة</button></div>
+      <div id="oLines"></div>
+      <label for="oCode">كود خصم (اختياري)</label><input class="field" id="oCode" dir="ltr" maxlength="24" autocomplete="off" style="text-transform:uppercase">
+      <div class="ototals" id="oTotals"></div>
+      <p class="err" id="oErr" role="alert"></p>
+    </form>
+    <div class="mfoot"><button class="btn" data-act="oSave" id="oSaveBtn">حفظ الطلب</button><button class="btn ghost" data-act="closeModals">إلغاء</button></div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/common.js"></script>
+  <script src="/admin.js"></script>
+</body>
+</html>

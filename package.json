@@ -1,0 +1,11 @@
+{
+  "name": "homezone-store",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HomeZone – متجر أجهزة كهربائية صغيرة مع لوحة إدارة (بدون أي حزم خارجية)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning server.js"
+  },
+  "engines": { "node": ">=22.13" }
+}

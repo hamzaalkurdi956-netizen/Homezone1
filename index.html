@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>HomeZone – بيتك يبدأ من هنا</title>
+<meta name="description" content="HomeZone متجر الأجهزة الكهربائية الصغيرة: قهوة وشاي ومطبخ وقلايات هوائية وعناية وتنظيف، بضمان الوكيل الرسمي وتوصيل لجميع المحافظات.">
+<meta name="theme-color" content="#101714">
+<link rel="icon" type="image/png" href="/img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="notice" id="notice" hidden></div>
+  <header class="top">
+    <div class="wrap">
+      <button class="brand" data-act="top" aria-label="HomeZone – الصفحة الرئيسية">
+        <img class="brandlogo" src="/img/logo-word.png" alt="HomeZone" width="700" height="119">
+      </button>
+      <div class="nav">
+        <button class="navlink" data-act="partnersPage">شركاء النجاح</button>
+        <button class="iconbtn" data-act="theme" aria-label="تبديل المظهر الفاتح والداكن">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>
+        </button>
+        <button class="cartbtn" id="cartBtn" data-act="open" aria-label="فتح السلة">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1.2 11H6.2z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+          <span>السلة</span><span class="n num" id="cartCount" hidden>0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="store">
+    <main>
+      <section class="wrap hero" id="top">
+        <div>
+          <span class="eyebrow">متجر الأجهزة الكهربائية الصغيرة</span>
+          <h1 class="herologo"><img src="/img/logo-full.png" alt="HomeZone – بيتك يبدأ من هنا" width="1000" height="632"></h1>
+          <p class="lead">لكل جهاز صغير منطقته الخاصة في بيتك.</p>
+          <p class="sub">ثمانية أقسام بأسماء وألوان واضحة. اختر المنطقة، وستجد فيها كل ما يلزم لمطبخك وبيتك.</p>
+          <button class="btn" data-act="catalog">تصفّح الأقسام
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+        </div>
+        <div class="map" id="map" role="list" aria-label="خريطة أقسام المتجر"></div>
+      </section>
+
+      <section class="wrap" id="catalog">
+        <div class="tools">
+          <div class="chips" id="chips" role="group" aria-label="تصفية حسب القسم"></div>
+          <div class="row">
+            <input class="field search" id="q" type="search" placeholder="ابحث عن جهاز أو قسم" aria-label="بحث">
+            <select class="field sort" id="sort" aria-label="ترتيب المنتجات">
+              <option value="default">الترتيب الافتراضي</option>
+              <option value="asc">السعر: من الأقل</option>
+              <option value="desc">السعر: من الأعلى</option>
+            </select>
+          </div>
+        </div>
+        <div id="list"><p class="empty">جارٍ تحميل المنتجات…</p></div>
+      </section>
+
+      <section class="wrap zone z-ink" id="watch" hidden>
+        <header class="zhead"><div><span class="zcode">فيديوهات وشروحات</span><h2>WATCH <em>ZONE</em></h2></div>
+          <p class="zdesc">شاهد الأجهزة وهي تعمل قبل أن تشتريها.</p></header>
+        <div class="vgrid" id="vlist"></div>
+      </section>
+
+      <section class="wrap perks">
+        <div><b>توصيل لجميع المحافظات</b><span>يصل الجهاز إلى باب البيت.</span></div>
+        <div><b>ضمان من الوكيل الرسمي</b><span>كل جهاز يصلك بضمان الوكيل الرسمي.</span></div>
+        <div><b>الدفع عند الاستلام</b><span>افحص الجهاز ثم ادفع.</span></div>
+      </section>
+    </main>
+  </div>
+
+  <section class="wrap zone z-ink" id="partners" hidden>
+    <header class="zhead"><div><span class="zcode">شركاء النجاح</span><h1>PARTNERS <em>ZONE</em></h1></div>
+      <p class="zdesc">الشركات والجهات التي نعمل معها.</p></header>
+    <div class="pgrid" id="partnerList"></div>
+    <p style="margin-top:28px"><button class="btn ghost" data-act="top">العودة إلى المتجر</button></p>
+  </section>
+
+  <footer class="foot">
+    <div class="wrap">
+      <img class="footlogo" src="/img/logo-word.png" alt="HomeZone" width="700" height="119">
+      <button class="link" data-act="partnersPage">شركاء النجاح</button>
+      <span>الأسعار بالدينار الأردني.</span>
+    </div>
+  </footer>
+
+  <div class="scrim" id="scrim" data-act="close" hidden></div>
+  <aside class="drawer" id="drawer" aria-label="سلة التسوق" aria-hidden="true">
+    <div class="dhead"><h2 id="dTitle">سلتك</h2><button class="iconbtn" id="closeBtn" data-act="close" aria-label="إغلاق السلة">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="dbody" id="cartBody"></div>
+    <div class="dfoot" id="cartFoot"></div>
+  </aside>
+
+  <div class="scrim m" id="mscrim" data-act="closeModals" hidden></div>
+  <div class="modal" id="pModal" role="dialog" aria-modal="true" aria-labelledby="pmTitle" hidden>
+    <div class="mhead"><h2 id="pmTitle"></h2><button class="iconbtn" data-act="closeModals" aria-label="إغلاق">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div class="mbody" id="pmBody"></div>
+    <div class="mfoot" id="pmFoot"></div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/common.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
